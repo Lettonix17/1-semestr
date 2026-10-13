@@ -1,3 +1,4 @@
+
 #Задачи с лабораторной
 2 лаба
 #include <iostream>
@@ -522,65 +523,60 @@ int main()
     double znamenatel = 1.0;
     double summa = 0;
 }
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
 #include <stdio.h>
-
 int main() {
+    setlocale(LC_ALL, "Russian");
     double S;
     printf("Введите значение S (S > 1): ");
     if (scanf("%lf", &S) != 1) {
         printf("Ошибка ввода.\n");
         return 1;
     }
+
     if (S >= 12.0) {
         printf("Сумма этой последовательности никогда не превысит 12.\n");
         printf("Для заданного S = %.2lf решения не существует.\n", S);
         return 0;
     }
-    double sum;
-    int n;
-    double power_of_two;
-    sum = 0.0;
-    n = 1;
-    power_of_two = 1.0;
 
+    double sum = 0.0;
+    int n = 1;
+    double power_of_two = 1.0;
     while (sum <= S) {
         double term = (n * n) / power_of_two;
         sum += term;
-        
         if (sum <= S) {
             n++;
             power_of_two *= 2.0;
         }
     }
-
     printf("\n--- Цикл while ---\n");
     printf("Минимальное количество элементов: %d\n", n);
     printf("Достигнутая сумма: %lf\n", sum);
+
     sum = 0.0;
     n = 1;
     power_of_two = 1.0;
-
     do {
         double term = (n * n) / power_of_two;
         sum += term;
-        
         if (sum <= S) {
             n++;
             power_of_two *= 2.0;
         }
     } while (sum <= S);
-
     printf("\n--- Цикл do-while ---\n");
     printf("Минимальное количество элементов: %d\n", n);
     printf("Достигнутая сумма: %lf\n", sum);
+
     sum = 0.0;
     n = 1;
     power_of_two = 1.0;
-
-    for ( ; sum <= S; ) {
+    for (; sum <= S; ) {
         double term = (n * n) / power_of_two;
         sum += term;
-        
         if (sum <= S) {
             n++;
             power_of_two *= 2.0;
@@ -589,5 +585,6 @@ int main() {
     printf("\n--- Цикл for ---\n");
     printf("Минимальное количество элементов: %d\n", n);
     printf("Достигнутая сумма: %lf\n", sum);
+
     return 0;
 }
