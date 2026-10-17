@@ -489,7 +489,7 @@ int main() {
         printf("Координаты третьей вершины (x y): ");
         scanf("%lf %lf", &x3, &y3);
         
-        // Вычисляем длины сторон напрямую, используя формулу расстояния между точками
+        
         double a = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         double b = sqrt((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
         double c = sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
@@ -514,7 +514,7 @@ int main() {
 int main() {
     setlocale(LC_ALL, "Russian");
     double S;
-    int valid = 0; // Флаг для проверки корректности ввода
+    int valid = 0;
 
     // Цикл ввода без break, continue и getchar
     while (valid == 0) {
@@ -584,5 +584,33 @@ int main() {
     printf("Минимальное количество элементов: %d\n", n);
     printf("Достигнутая сумма: %lf\n", sum);
 
+    return 0;
+}
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
+#include <stdio.h>
+int main() {
+	setlocale(LC_ALL, "Russian");
+    long long k;
+    printf("Введите число K (K <= 10**9): ");
+    if (scanf("%lld", &k) != 1) return 0;
+    if (k == 0) {
+        printf("0\n");
+        return 0;
+}
+    int count[10] = { 0 };
+    long long temp = k;
+    while (temp > 0) {
+        int digit = temp % 10;
+        count[digit]++;
+        temp /= 10;
+    }
+    printf("Результат: ");
+    for (int i = 0; i <= 9; i++) {
+        for (int j = 0; j < count[i]; j++) {
+            printf("%d", i);
+        }
+    }
+    printf("\n");
     return 0;
 }
