@@ -614,3 +614,80 @@ int main() {
     printf("\n");
     return 0;
 }
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
+#include <stdio.h>
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    
+    long long k;
+    printf("Введите число K (K <= 10**9): ");
+    if (scanf("%lld", &k) != 1) return 0;
+    
+    if (k == 0) {
+        printf("Результат (любым способом): 0\n");
+        return 0;
+    }
+
+    // --- СПОСОБ 1: Цикл while ---
+    {
+        int count[10] = { 0 };
+        long long temp1 = k;
+        
+        while (temp1 > 0) {
+            int digit = temp1 % 10;
+            count[digit]++;
+            temp1 /= 10;
+        }
+        
+        printf("Результат через while: ");
+        for (int i = 0; i <= 9; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                printf("%d", i);
+            }
+        }
+        printf("\n");
+    }
+
+    // --- СПОСОБ 2: Цикл for ---
+    {
+        int count[10] = { 0 };
+        long long temp2 = k;
+        
+        for (; temp2 > 0; temp2 /= 10) {
+            int digit = temp2 % 10;
+            count[digit]++;
+        }
+        
+        printf("Результат через for:   ");
+        for (int i = 0; i <= 9; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                printf("%d", i);
+            }
+        }
+        printf("\n");
+    }
+
+    // --- СПОСОБ 3: Цикл do-while ---
+    {
+        int count[10] = { 0 };
+        long long temp3 = k;
+        
+        do {
+            int digit = temp3 % 10;
+            count[digit]++;
+            temp3 /= 10;
+        } while (temp3 > 0);
+        
+        printf("Результат через do-while: ");
+        for (int i = 0; i <= 9; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                printf("%d", i);
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
