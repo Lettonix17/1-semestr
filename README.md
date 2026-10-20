@@ -1,4 +1,3 @@
-
 #Задачи с лабораторной
 2 лаба
 #include <iostream>
@@ -201,253 +200,6 @@ int main() {
     printf("РОМБОВ - %d, ПАРАЛЛЕЛОГРАММОВ - %d\n", k1, k2);
     return 0;
 }
-
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
-double fnm(double x1, double x2, double y1, double y2) {
-    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-}
-int main() {
-    setlocale(LC_ALL, "Russian");
-    int n;
-    double p;
-    int K = 0;
-    printf("Введите число треугольников n: ");
-    if (scanf("%d", &n) != 1 || n <= 0) {
-        printf("Некорректное значение n.\n");
-        return 1;
-    }
-    printf("Ввести периметр P: ");
-    scanf("%lf", &p);
-    double x1, y1, x2, y2, x3, y3;
-    for (int i = 0; i < n; i++) {
-        printf("\nТреугольник %d:\n", i + 1);
-        printf("Координаты первой вершины (x y): ");
-        scanf("%lf %lf", &x1, &y1);
-
-        printf("Координаты второй вершины (x y): ");
-        scanf("%lf %lf", &x2, &y2);
-
-        printf("Координаты третьей вершины (x y): ");
-        scanf("%lf %lf", &x3, &y3);
-        double a = fnm(x1, x2, y1, y2);
-        double b = fnm(x1, x3, y1, y3);
-        double c = fnm(x2, x3, y2, y3);
-        if ((a + b +  c > p) &&
-            ((a * a + b * b < c * c) || (b * b + c * c < a * a) || (a * a + c * c < b * b))) {
-            K++;
-        }
-    }
-    printf("\nЧисло треугольников, удовлетворяющих условию: %d\n", K);
-    return 0;
-}
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
-
-double fnm(double x1, double x2, double y1, double y2) {
-    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-}
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-    int n;
-    double p;
-
-    // Цикл do-while гарантирует, что код внутри выполнится хотя бы 1 раз
-    do {
-        int K = 0; // Сбрасываем счетчик для новой серии треугольников
-
-        printf("\n========================================\n");
-        printf("Введите число треугольников n (или 0 для выхода): ");
-        
-        // Проверяем, удалось ли считать число
-        if (scanf("%d", &n) != 1) {
-            printf("Ошибка ввода! Введите целое число.\n");
-            while (getchar() != '\n'); // Очищаем буфер, чтобы не было зацикливания
-            n = -1; // Присваиваем -1, чтобы цикл не завершился случайно
-            continue; // Переходим в конец цикла к условию while
-        }
-
-        // Если ввели 0, выходим из цикла
-        if (n == 0) {
-            printf("Программа завершена.\n");
-            break;
-        }
-
-        if (n < 0) {
-            printf("Число треугольников не может быть отрицательным. Попробуйте еще раз.\n");
-            continue;
-        }
-
-        printf("Ввести периметр P: ");
-        if (scanf("%lf", &p) != 1 || p <= 0) {
-            printf("Некорректный периметр (должно быть положительное число). Начинаем заново.\n");
-            while (getchar() != '\n'); 
-            continue;
-        }
-
-        double x1, y1, x2, y2, x3, y3;
-        for (int i = 0; i < n; i++) {
-            printf("\nТреугольник %d:\n", i + 1);
-            printf("Координаты первой вершины (x y): ");
-            scanf("%lf %lf", &x1, &y1);
-
-            printf("Координаты второй вершины (x y): ");
-            scanf("%lf %lf", &x2, &y2);
-
-            printf("Координаты третьей вершины (x y): ");
-            scanf("%lf %lf", &x3, &y3);
-            
-            double a = fnm(x1, x2, y1, y2);
-            double b = fnm(x1, x3, y1, y3);
-            double c = fnm(x2, x3, y2, y3);
-            
-            // Условие: периметр больше заданного P и треугольник тупоугольный
-            if ((a + b + c > p) &&
-                ((a * a + b * b < c * c) || (b * b + c * c < a * a) || (a * a + c * c < b * b))) {
-                K++;
-            }
-        }
-        
-        printf("\nЧисло треугольников, удовлетворяющих условию: %d\n", K);
-
-    } while (n != 0); // Проверка условия идет в самом конце
-
-    return 0;
-}
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
-
-double fnm(double x1, double x2, double y1, double y2) {
-    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-}
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-    int n;
-    double p;
-
-    do {
-        int K = 0; // Сбрасываем счетчик для новой серии треугольников
-
-        printf("\n========================================\n");
-        printf("Введите число треугольников n (или 0 для выхода): ");
-        scanf("%d", &n);
-
-        // Если ввели 0, выходим из цикла
-        if (n == 0) {
-            printf("Программа завершена.\n");
-            break;
-        }
-
-        // Защита от отрицательных чисел
-        if (n < 0) {
-            printf("Число треугольников не может быть отрицательным. Попробуйте еще раз.\n");
-            continue;
-        }
-
-        printf("Ввести периметр P: ");
-        scanf("%lf", &p);
-
-        // Защита от отрицательного или нулевого периметра
-        if (p <= 0) {
-            printf("Некорректный периметр. Начинаем заново.\n");
-            continue;
-        }
-
-        double x1, y1, x2, y2, x3, y3;
-        for (int i = 0; i < n; i++) {
-            printf("\nТреугольник %d:\n", i + 1);
-            printf("Координаты первой вершины (x y): ");
-            scanf("%lf %lf", &x1, &y1);
-
-            printf("Координаты второй вершины (x y): ");
-            scanf("%lf %lf", &x2, &y2);
-
-            printf("Координаты третьей вершины (x y): ");
-            scanf("%lf %lf", &x3, &y3);
-            
-            double a = fnm(x1, x2, y1, y2);
-            double b = fnm(x1, x3, y1, y3);
-            double c = fnm(x2, x3, y2, y3);
-            
-            // Условие: периметр больше заданного P и треугольник тупоугольный
-            if ((a + b + c > p) &&
-                ((a * a + b * b < c * c) || (b * b + c * c < a * a) || (a * a + c * c < b * b))) {
-                K++;
-            }
-        }
-        
-        printf("\nЧисло треугольников, удовлетворяющих условию: %d\n", K);
-
-    } while (n != 0);
-
-    return 0;
-}
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-    int n;
-    double p;
-    int K = 0;
-
-    do {
-        printf("Введите число треугольников n (больше 0): ");
-        scanf("%d", &n);
-        
-        if (n <= 0) {
-            printf("Ошибка! Число треугольников не может быть 0 или меньше. Введите заново.\n\n");
-        }
-    } while (n <= 0);
-
-    do {
-        printf("Ввести периметр P (больше 0): ");
-        scanf("%lf", &p);
-        
-        if (p <= 0) {
-            printf("Ошибка! Периметр должен быть положительным числом. Введите заново.\n\n");
-        }
-    } while (p <= 0);
-
-    double x1, y1, x2, y2, x3, y3;
-    for (int i = 0; i < n; i++) {
-        printf("\nТреугольник %d:\n", i + 1);
-        printf("Координаты первой вершины (x y): ");
-        scanf("%lf %lf", &x1, &y1);
-
-        printf("Координаты второй вершины (x y): ");
-        scanf("%lf %lf", &x2, &y2);
-
-        printf("Координаты третьей вершины (x y): ");
-        scanf("%lf %lf", &x3, &y3);
-        
-        // Вычисляем длины сторон напрямую, используя формулу расстояния между точками
-        double a = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-        double b = sqrt((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
-        double c = sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
-        
-        if ((a + b + c > p) &&
-            ((a * a + b * b < c * c) || (b * b + c * c < a * a) || (a * a + c * c < b * b))) {
-            K++;
-        }
-    }
-    
-    printf("\nЧисло треугольников, удовлетворяющих условию: %d\n", K);
-
-    return 0;
-}
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <math.h>
@@ -504,9 +256,6 @@ int main() {
 
     return 0;
 }
-
-
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <locale.h>
 #include <stdio.h>
@@ -589,105 +338,71 @@ int main() {
 #define _CRT_SECURE_NO_WARNINGS
 #include <locale.h>
 #include <stdio.h>
-int main() {
-	setlocale(LC_ALL, "Russian");
-    long long k;
-    printf("Введите число K (K <= 10**9): ");
-    if (scanf("%lld", &k) != 1) return 0;
-    if (k == 0) {
-        printf("0\n");
-        return 0;
-}
-    int count[10] = { 0 };
-    long long temp = k;
-    while (temp > 0) {
-        int digit = temp % 10;
-        count[digit]++;
-        temp /= 10;
-    }
-    printf("Результат: ");
-    for (int i = 0; i <= 9; i++) {
-        for (int j = 0; j < count[i]; j++) {
-            printf("%d", i);
-        }
-    }
-    printf("\n");
-    return 0;
-}
-#define _CRT_SECURE_NO_WARNINGS
-#include <locale.h>
-#include <stdio.h>
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    
-    long long k;
-    printf("Введите число K (K <= 10**9): ");
-    if (scanf("%lld", &k) != 1) return 0;
-    
+
+    long long k = 0;
+    int Valid = 0;
+
+    while (Valid == 0) {
+        printf("Введите число K (K <= 1e9): ");
+        if (scanf("%lld", &k) != 1) {
+            printf("Ошибка: введено не число! Попробуйте снова.\n");
+            scanf("%*s");
+        }
+        else {
+            if (k < 0 || k > 1000000000LL) {
+                printf("Ошибка! Попробуйте снова.\n");
+            }
+            else {
+                Valid = 1; 
+            }
+        }
+    }
+
     if (k == 0) {
-        printf("Результат (любым способом): 0\n");
+        printf("\nРезультат (любым способом): 0\n");
         return 0;
     }
 
-    // --- СПОСОБ 1: Цикл while ---
-    {
-        int count[10] = { 0 };
-        long long temp1 = k;
-        
-        while (temp1 > 0) {
-            int digit = temp1 % 10;
-            count[digit]++;
-            temp1 /= 10;
+    printf("\n");
+
+    printf("Результат через while:   ");
+    for (int i = 0; i <= 9; i++) {
+        long long temp = k;
+        while (temp > 0) {
+            int digit = temp % 10;
+            if (digit == i) {
+                printf("%d", i);
+            }
+            temp /= 10;
         }
-        
-        printf("Результат через while: ");
-        for (int i = 0; i <= 9; i++) {
-            for (int j = 0; j < count[i]; j++) {
+    }
+    printf("\n");
+
+    printf("Результат через for:     ");
+    for (int i = 0; i <= 9; i++) {
+        for (long long temp = k; temp > 0; temp /= 10) {
+            int digit = temp % 10;
+            if (digit == i) {
                 printf("%d", i);
             }
         }
-        printf("\n");
     }
-
-    // --- СПОСОБ 2: Цикл for ---
-    {
-        int count[10] = { 0 };
-        long long temp2 = k;
-        
-        for (; temp2 > 0; temp2 /= 10) {
-            int digit = temp2 % 10;
-            count[digit]++;
-        }
-        
-        printf("Результат через for:   ");
-        for (int i = 0; i <= 9; i++) {
-            for (int j = 0; j < count[i]; j++) {
-                printf("%d", i);
-            }
-        }
-        printf("\n");
-    }
-
-    // --- СПОСОБ 3: Цикл do-while ---
-    {
-        int count[10] = { 0 };
-        long long temp3 = k;
-        
+    printf("\n");
+    printf("Результат через do-while: ");
+    for (int i = 0; i <= 9; i++) {
+        long long temp = k;
         do {
-            int digit = temp3 % 10;
-            count[digit]++;
-            temp3 /= 10;
-        } while (temp3 > 0);
-        
-        printf("Результат через do-while: ");
-        for (int i = 0; i <= 9; i++) {
-            for (int j = 0; j < count[i]; j++) {
+            int digit = temp % 10;
+            if (digit == i) {
                 printf("%d", i);
             }
-        }
-        printf("\n");
+            temp /= 10;
+        } while (temp > 0);
     }
+    printf("\n");
 
     return 0;
 }
