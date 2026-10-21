@@ -91,8 +91,20 @@ int main()
 	printf("%d\n", bstep);
 	return 0;
 }
-#include <stdio.h> #include <math.h> #include <locale.h>
-int main() { setlocale(LC_ALL, "Russian"); int nachal; unsigned short hod = 0, max = 0, optimal_hod = 0, summa; do { printf("Введите начальную сумму в копейках: "); scanf_s("%d", &nachal); } while (nachal < 0 || nachal >= 10000);
+#include <stdio.h> 
+#include <math.h>
+#include <locale.h>
+int main() {
+setlocale(LC_ALL, "Russian");
+int nachal;
+unsigned short hod = 0, 
+max = 0,
+optimal_hod = 0,
+summa;
+do {
+    printf("Введите начальную сумму в копейках: ");
+	scanf_s("%d", &nachal); 
+} while (nachal < 0 || nachal >= 10000);
 summa = nachal;
 max = summa;
 if (summa >= 29)
