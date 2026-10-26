@@ -418,3 +418,83 @@ int main() {
 
     return 0;
 }
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int n;
+    double a, b;
+    int valid = 0;
+
+    while (!valid) {
+        printf("Введите количество элементов массива N (от 1 до 10000): ");
+        if (scanf("%d", &n) == 1 && n > 0 && n <= 10000) {
+            valid = 1;
+        }
+        else {
+            scanf("%*s");
+            printf("Некорректный ввод. Попробуйте еще раз.\n");
+        }
+    }
+
+    valid = 0;
+    while (!valid) {
+        printf("Введите границы диапазона A и B через пробел: ");
+        if (scanf("%lf %lf", &a, &b) == 2) {
+            valid = 1;
+        }
+        else {
+            scanf("%*s");
+            printf("Некорректный ввод. Попробуйте еще раз.\n");
+        }
+    }
+
+    if (a > b) {
+        double temp = a;
+        a = b;
+        b = temp;
+    }
+
+    double arr[n];
+    double filtered[n];
+
+    printf("\nИсходный массив:\n");
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        arr[i] = 11.0 + ((double)rand() / RAND_MAX) * (22.0 - 11.0);
+        printf("%.2f ", arr[i]);
+
+        if (arr[i] >= a && arr[i] <= b) {
+            filtered[count] = arr[i];
+            count++;
+        }
+    }
+    printf("\n");
+
+    if (count == 0) {
+        printf("\nЭлементов в диапазоне [%.2f, %.2f] не найдено.\n", a, b);
+    }
+    else {
+        for (int i = 1; i < count; i++) {
+            double key = filtered[i];
+            int j = i - 1;
+
+            while (j >= 0 && filtered[j] < key) {
+                filtered[j + 1] = filtered[j];
+                j--;
+            }
+            filtered[j + 1] = key;
+        }
+
+        printf("\nЭлементы в диапазоне [%.2f, %.2f] по невозрастанию:\n", a, b);
+        for (int i = 0; i < count; i++) {
+            printf("%.2f ", filtered[i]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
