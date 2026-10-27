@@ -425,26 +425,28 @@ int main() {
 
 int main() {
     setlocale(LC_ALL, "Russian");
+
+    const int size = 10000;
+
     int n;
     double a, b;
-    int valid = 0;
+    bool valid = false;
 
     while (!valid) {
-        printf("Введите количество элементов массива N (от 1 до 10000): ");
-        if (scanf("%d", &n) == 1 && n > 0 && n <= 10000) {
-            valid = 1;
+        printf("Введите количество элементов массива N (от 1 до %d): ", size);
+        if (scanf("%d", &n) == 1 && n > 0 && n <= size) {
+            valid = true;
         }
         else {
-            scanf("%*s");
             printf("Некорректный ввод. Попробуйте еще раз.\n");
         }
     }
 
-    valid = 0;
+    valid = false;
     while (!valid) {
         printf("Введите границы диапазона A и B через пробел: ");
         if (scanf("%lf %lf", &a, &b) == 2) {
-            valid = 1;
+            valid = true;
         }
         else {
             scanf("%*s");
@@ -458,15 +460,21 @@ int main() {
         b = temp;
     }
 
-    double arr[n];
-    double filtered[n];
+    
+    double arr[size];
+    double filtered[size];
 
     printf("\nИсходный массив:\n");
     int count = 0;
     for (int i = 0; i < n; i++) {
-        arr[i] = 11.0 + ((double)rand() / RAND_MAX) * (22.0 - 11.0);
-        printf("%.2f ", arr[i]);
+        if (n > 1) {
+            arr[i] = 11.0 + ((double)i / (n - 1)) * (22.0 - 11.0);
+        }
+        else {
+            arr[i] = 11.0;
+        }
 
+        printf("%.2f ", arr[i]);
         if (arr[i] >= a && arr[i] <= b) {
             filtered[count] = arr[i];
             count++;
@@ -481,7 +489,6 @@ int main() {
         for (int i = 1; i < count; i++) {
             double key = filtered[i];
             int j = i - 1;
-
             while (j >= 0 && filtered[j] < key) {
                 filtered[j + 1] = filtered[j];
                 j--;
