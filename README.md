@@ -502,6 +502,221 @@ int main() {
         }
         printf("\n");
     }
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+double calculate_final_score(const double* scores, int m) {
+    double sum = 0;
+    double max_score = scores[0];
+    double min_score = scores[0];
+
+    for (int i = 0; i < m; i++) {
+        sum += scores[i];
+        if (scores[i] > max_score) max_score = scores[i];
+        if (scores[i] < min_score) min_score = scores[i];
+    }
+    return (sum - max_score - min_score) / (m - 2);
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    srand((unsigned int)time(NULL));
+
+    int n = 2 + rand() % (10 - 2 + 1); 
+    int m = 3 + rand() % (10 - 3 + 1); 
+
+    printf("Сгенерировано: Спортсменов = %d, Судей = %d\n\n", n, m);
+
+    const int size = 10;
+    double all_scores[size][size]; 
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            all_scores[i][j] = (rand() % 101) / 10.0;
+        }
+    }
+
+    
+    printf("Результаты судейства:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Спортсмен %2d: ", i + 1);
+        for (int j = 0; j < m; j++) {
+            printf("%4.1f ", all_scores[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    
+    printf("Итоговые результаты спортсменов:\n");
+    for (int i = 0; i < n; i++) {
+        double result = calculate_final_score(all_scores[i], m);
+        printf("Спортсмен %d: %.2f\n", i + 1, result);
+    }
+
+    return 0;
+}
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h> 
+#include <time.h>
+#define MAX_PLACE 50 
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int n, m;
+    srand(time(NULL));
+    do {
+        printf("Введите количество лыжников (N) и количество стартов (M): ");
+        scanf("%d %d", &n, &m);
+
+        if (n <= 0 || m <= 0) {
+            printf("Ошибка! Числа должны быть строго больше нуля. Повторите ввод.\n\n");
+        }
+    } while (n <= 0 || m <= 0);
+
+    int sums[1000];
+    int last_stages[1000];  
+
+    printf("\n--- Сгенерированные результаты соревнований ---\n");
+    for (int i = 0; i < n; i++) {
+        sums[i] = 0;
+        printf("Лыжник №%d занял места: ", i + 1);
+
+        for (int j = 0; j < m; j++) {
+            int place = rand() % MAX_PLACE + 1;
+            printf("%d ", place);
+
+            sums[i] += place;
+            if (j == m - 1) {
+                last_stages[i] = place;
+            }
+        }
+        printf("| Сумма: %d\n", sums[i]);
+    }
+
+    int winner_index = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (sums[i] < sums[winner_index]) {
+            winner_index = i;
+        }
+        else if (sums[i] == sums[winner_index]) {
+            if (last_stages[i] < last_stages[winner_index]) {
+                winner_index = i;
+            }
+        }
+    }
+
+    printf("\n=== ИТОГИ ===\n");
+    printf("Победитель в общем зачете: Лыжник №%d\n", winner_index + 1);
+    printf("Сумма мест: %d, Место на последнем этапе: %d\n", sums[winner_index], last_stages[winner_index]);
+
+    return 0;
+}
+    return 0;
+}
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+int main() {
+    setlocale(LC_ALL, "Russian");
+    const int MAX_SIZE = 100;
+
+    int n, m;
+    bool valid = false;
+
+    double a[MAX_SIZE];
+    double b[MAX_SIZE];
+    double c[MAX_SIZE * 2];
+
+    
+    while (!valid) {
+        printf("Введите размер первого массива N (0 < N <= %d): ", MAX_SIZE);
+        if (scanf("%d", &n) == 1) {
+            if (n <= 0) {
+                printf("Ошибка: размер должен быть больше 0.\n");
+            }
+            else if (n > MAX_SIZE) {
+                printf("Ошибка: размер не должен превышать %d.\n", MAX_SIZE);
+            }
+            else {
+                valid = true;
+            }
+        }
+        else {
+            printf("Ошибка: нужно ввести целое число!\n");
+            scanf("%*s");
+        }
+    }
+
+    valid = false;
+
+    
+    while (!valid) {
+        printf("Введите размер второго массива M (0 < M <= %d): ", MAX_SIZE);
+        if (scanf("%d", &m) == 1) {
+            if (m <= 0) {
+                printf("Ошибка: размер должен быть больше 0.\n");
+            }
+            else if (m > MAX_SIZE) {
+                printf("Ошибка: размер не должен превышать %d.\n", MAX_SIZE);
+            }
+            else {
+                valid = true;
+            }
+        }
+        else {
+            printf("Ошибка: нужно ввести целое число!\n");
+            scanf("%*s");
+        }
+    }
+
+    
+    for (int i = 0; i < n; i++) {
+        a[i] = ((double)rand() / RAND_MAX) * 99.0 + 1.0;
+    }
+
+    
+    for (int i = 0; i < m; i++) {
+        b[i] = ((double)rand() / RAND_MAX) * 99.0 + 1.0;
+    }
+
+    
+    printf("\nСгенерированный первый массив A:\n");
+    for (int i = 0; i < n; i++) {
+        printf("a[%d] = %.2f\n", i, a[i]);
+    }
+
+    printf("\nСгенерированный второй массив B:\n");
+    for (int i = 0; i < m; i++) {
+        printf("b[%d] = %.2f\n", i, b[i]);
+    }
+
+    int idx = 0;
+
+    for (int i = 0; i < n; i += 2) {
+        c[idx++] = a[i];
+    }
+
+    for (int i = 1; i < m; i += 2) {
+        c[idx++] = b[i];
+    }
+
+    int k = idx;
+    printf("\nРезультирующий массив (размер %d):\n", k);
+    if (k == 0) {
+        printf("Массив оказался пустым.\n");
+    }
+    else {
+        for (int i = 0; i < k; i++) {
+            printf("%.2f ", c[i]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
