@@ -720,3 +720,98 @@ int main() {
 
     return 0;
 }
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    const int MAX_SKIERS = 1000;
+    const int MAX_STAGES = 50;
+    const int MAX_PLACE = 50;
+
+    int n_input, m_input;
+    srand((unsigned int)time(NULL));
+
+    int res;
+
+    do {
+        printf("Введите количество лыжников (N) и количество стартов (M): ");
+        res = scanf("%d %d", &n_input, &m_input);
+
+        if (res != 2 || n_input <= 0 || n_input > MAX_SKIERS ||
+            m_input <= 0 || m_input > MAX_STAGES) {
+            scanf("%*[^\n]%*c");
+
+            printf("Ошибка! Введите два целых числа в допустимых пределах.\n");
+            printf("N: от 1 до %d, M: от 1 до %d\n\n", MAX_SKIERS, MAX_STAGES);
+        }
+    } while (res != 2 || n_input <= 0 || n_input > MAX_SKIERS ||
+        m_input <= 0 || m_input > MAX_STAGES);
+
+    const int n = n_input;
+    const int m = m_input;
+
+    int results[MAX_SKIERS][MAX_STAGES];
+
+    printf("\n--- Сгенерированные результаты соревнований ---\n");
+
+    for (int i = 0; i < n; ++i) {
+        int sum = 0;
+        printf("Лыжник №%d занял места: ", i + 1);
+
+        for (int j = 0; j < m; ++j) {
+            const int place = rand() % MAX_PLACE + 1;
+            results[i][j] = place;
+            sum += place;
+            printf("%d ", place);
+        }
+
+        const int last_place = results[i][m - 1];
+        printf("| Сумма: %d\n", sum);
+    }
+
+    int winner_index = 0;
+    int best_sum = 0;
+
+    for (int j = 0; j < m; ++j) {
+        best_sum += results[0][j];
+    }
+    const int best_last = results[0][m - 1];
+
+    for (int i = 1; i < n; ++i) {
+        int current_sum = 0;
+        for (int j = 0; j < m; ++j) {
+            current_sum += results[i][j];
+        }
+        const int current_last = results[i][m - 1];
+
+        if (current_sum < best_sum) {
+            best_sum = current_sum;
+            winner_index = i;
+        }
+        else if (current_sum == best_sum) {
+            if (current_last < best_last) {
+                best_sum = current_sum;
+                winner_index = i;
+            }
+        }
+    }
+
+    int final_sum = 0;
+    for (int j = 0; j < m; ++j) {
+        final_sum += results[winner_index][j];
+    }
+    const int final_last = results[winner_index][m - 1];
+
+    printf("\n=== ИТОГИ ===\n");
+    printf("Победитель в общем зачёте: Лыжник №%d\n", winner_index + 1);
+    printf("Сумма мест: %d, Место на последнем этапе: %d\n", final_sum, final_last);
+
+    return 0;
+}
+
+
