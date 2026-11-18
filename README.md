@@ -814,4 +814,149 @@ int main() {
     return 0;
 }
 
+#include <stdio.h>
+#include <locale.h>
+#include <windows.h>
 
+const int MAX_NAME = 40;
+const int MAX_COUNT_EXAMS = 5;
+const int MIN_COUNT_EXAMS = 3;
+const int MAX_SCORE_EXAMS = 5;
+const int MIN_SCORE_EXAMS = 2;
+const int MIN_YEAR = 1970;
+const int MAX_YEAR = 2010;
+const int N = 3;
+
+struct Date {
+    int day;
+    int month;
+    int year;
+
+    bool isValid() {
+        if (year < MIN_YEAR || year > MAX_YEAR || month < 1 || month > 12 || day < 1 || day > 31)
+            return false;
+        int days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+            days[1] = 29;
+        return day <= days[month - 1];
+    }
+};
+
+struct Student {
+    char surname[MAX_NAME];
+    char name[MAX_NAME];
+    Date birth;
+    int scores[MAX_COUNT_EXAMS];
+};
+
+void sortByBirthMonth(Student group[], int count) {
+    for (int i = 0; i < count - 1; i++)
+        for (int j = 0; j < count - i - 1; j++)
+            if (group[j].birth.month > group[j + 1].birth.month) {
+                Student temp = group[j];
+                group[j] = group[j + 1];
+                group[j + 1] = temp;
+            }
+}
+
+bool hasOneGoodRestExcellent(const Student& s, int countExams) {
+    int count4 = 0, count5 = 0;
+    for (int j = 0; j < countExams; j++) {
+        if (s.scores[j] == 4) count4++;
+        else if (s.scores[j] == 5) count5++;
+        else return false;
+    }
+    return count4 == 1 && count5 == countExams - 1;
+}
+
+void printHeader(char subjects[][MAX_NAME], int countExams) {
+    printf("%15s%15s%18s    Оценки(", "Фамилия", "Имя", "Дата рождения");
+    for (int j = 0; j < countExams; j++) {
+        printf("%s", subjects[j]);
+        if (j < countExams - 1) printf(", ");
+    }
+    printf(")\n");
+}
+
+void printStudent(const Student& s, int countExams) {
+    printf("%15s%15s", s.surname, s.name);
+    printf("%8s%02d/%02d/%04d", "", s.birth.day, s.birth.month, s.birth.year);
+    printf("%8s", "");
+    for (int j = 0; j < countExams; j++)
+        printf("%3d", s.scores[j]);
+    printf("\n");
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    Student group[N];
+    char subjects[MAX_COUNT_EXAMS][MAX_NAME] = { "математика", "физика", "информатика", "химия", "русский" };
+    int countStudent, countExams;
+
+    do {
+        printf("Введите количество студентов (1-%d): ", N);
+        scanf_s("%d", &countStudent);
+    } while (countStudent < 1 || countStudent > N);
+
+    do {
+        printf("Введите количество экзаменов (не менее %d и не более %d): ", MIN_COUNT_EXAMS, MAX_COUNT_EXAMS);
+        scanf_s("%d", &countExams);
+    } while (countExams < MIN_COUNT_EXAMS || countExams > MAX_COUNT_EXAMS);
+
+    for (int i = 0; i < countStudent; i++) {
+        printf("Введите информацию о %d - студенте\n", i + 1);
+
+        printf("Фамилия: ");
+        scanf_s("%s", group[i].surname, (unsigned)MAX_NAME);
+
+        printf("Имя: ");
+        scanf_s("%s", group[i].name, (unsigned)MAX_NAME);
+
+        do {
+            printf("Дата рождения (день, месяц, год %d-%d): ", MIN_YEAR, MAX_YEAR);
+            scanf_s("%d%d%d", &group[i].birth.day, &group[i].birth.month, &group[i].birth.year);
+        } while (!group[i].birth.isValid());
+
+        bool ok;
+        do {
+            ok = true;
+            printf("Оценки (");
+            for (int j = 0; j < countExams; j++) {
+                printf("%s", subjects[j]);
+                if (j < countExams - 1) printf(", ");
+            }
+            printf(") %d-%d: ", MIN_SCORE_EXAMS, MAX_SCORE_EXAMS);
+
+            for (int j = 0; j < countExams; j++)
+                scanf_s("%d", &group[i].scores[j]);
+
+            for (int j = 0; j < countExams; j++)
+                if (group[i].scores[j] < MIN_SCORE_EXAMS || group[i].scores[j] > MAX_SCORE_EXAMS)
+                    ok = false;
+        } while (!ok);
+    }
+
+    sortByBirthMonth(group, countStudent);
+
+    printf("\n");
+    printHeader(subjects, countExams);
+    for (int i = 0; i < countStudent; i++)
+        printStudent(group[i], countExams);
+
+    printf("\nResult (одна «4», остальные «5»):\n");
+    printHeader(subjects, countExams);
+    bool found = false;
+    for (int i = 0; i < countStudent; i++)
+        if (hasOneGoodRestExcellent(group[i], countExams)) {
+            found = true;
+            printStudent(group[i], countExams);
+        }
+
+    if (!found)
+        printf("Нет студентов, удовлетворяющих условию.\n");
+
+    return 0;
+}
