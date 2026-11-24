@@ -960,3 +960,97 @@ int main() {
 
     return 0;
 }
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+const int N = 7;
+const int months = 12;
+double zp(const double salaries[], int months) {
+    double sum = 0.0;
+    for (int i = 0; i < months; i++) {
+        sum += salaries[i];
+    }
+    return sum;
+}
+int main() {
+    setlocale(LC_ALL, "Russian");
+    const char* surnames[] = { "Legotin", "Abdulfaizov", "Malkova", "Azova", "Matkovskaya", "McDavid", "Vasilevsky" };
+    double salaries[][12] = {
+        {100000, 50000, 52000, 50000, 55000, 50000, 65000, 53000, 50000, 50000, 50000, 60000},
+        {45000, 45000, 45000, 46000, 45000, 45000, 48000, 45000, 47000, 45000, 47000, 50000},
+        {70000, 70000, 75000, 70000, 70000, 72000, 70000, 70000, 70000, 75000, 70000, 85000},
+        {60000, 60000, 60000, 62000, 60000, 60000, 65000, 60000, 60000, 60000, 60000, 70000},
+        {40000, 40000, 42000, 40000, 40000, 41000, 40000, 40000, 40000, 43000, 40000, 45000},
+        {80000, 80000, 80000, 85000, 80000, 80000, 82000, 80000, 80000, 80000, 85000, 95000},
+        {55000, 55000, 55000, 55000, 58000, 55000, 55000, 55000, 57000, 55000, 55000, 62000}
+    };
+
+    double itogSalaries[7];
+    double totalCompanySalary = 0.0;
+    for (int i = 0; i < N; i++) {
+        itogSalaries[i] = zp(salaries[i], months);
+        totalCompanySalary += itogSalaries[i];
+    }
+    printf("Годовая зарплата всех сотрудников:\n");
+    for (int i = 0; i < N; i++) {
+        printf("- %-15s %.2f\n", surnames[i], itogSalaries[i]);
+    }
+    printf("\n");
+    double sredSalary = totalCompanySalary / N;
+    printf("Средняя годовая зарплата: %.2f\n\n", sredSalary);
+    printf("Люди с большей зарплатой, чем средней:\n");
+    for (int i = 0; i < N; i++) {
+        if (itogSalaries[i] > sredSalary) {
+            printf("- %s (%.2f)\n", surnames[i], itogSalaries[i]);
+        }
+    }
+    return 0;
+}
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+
+double apartmentplat(double kwh, int residents, double rate) {
+    double Person = kwh / residents;
+    double effectiveRate = rate;
+    if (Person > 100.0) {
+        effectiveRate = rate * 1.2;
+    }
+
+    return kwh * effectiveRate;
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    srand((unsigned int)time(NULL));
+
+    const int apartments = 24;
+    const double min_rate = 0.01;
+    const double max_rate = 10000.0;
+    const double min_kwh = 0.01;
+    const double max_kwh = 10000.0;
+    const int max_residents = 10;
+
+    
+    double rate = min_rate + ((double)rand() / RAND_MAX) * (max_rate - min_rate);
+    double totalPayment = 0.0;
+
+    printf("Сгенерированный базовый тариф R: %.2f коп.\n\n", rate);
+
+    for (int i = 1; i <= apartments; i++) {
+        // Случайный расход и количество жильцов
+        double kwh = min_kwh + ((double)rand() / RAND_MAX) * (max_kwh - min_kwh);
+        int residents = 1 + rand() % max_residents;
+
+        double flatPayment = apartmentplat(kwh, residents, rate);
+        totalPayment += flatPayment;
+
+        printf("Квартира %2d | расход: %7.2f кВт*ч | жильцов: %2d | плата: %10.2f коп. (%8.2f руб.)\n",
+            i, kwh, residents, flatPayment,flatPayment / 100.0);
+    }
+
+    printf("\nСуммарная плата за электричество: %.2f коп. (%.2f руб.)\n", totalPayment, totalPayment / 100.0);
+    return 0;
+}
